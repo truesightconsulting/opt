@@ -14,10 +14,10 @@ password=args[9]
 
 
 
-# setwd("/home/rstudio/nviz/chase/")
+# setwd("d:\\Archives\\Git\\chase\\")
 # # main code path
-# main.path="/home/rstudio/nviz/opt/"
-# opt_id=216
+# main.path="d:\\Archives\\Git\\opt\\"
+# opt_id=248
 # client_id=9
 # # DB server info
 # db.server="127.0.0.1"
