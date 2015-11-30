@@ -264,16 +264,16 @@ if (nrow(curve)==0){
       print("Note: Optimization reached goal value.")
     }
     
-    if ((goal.check<goal)&(ex.setup$optimization_type %in% c(2,6,7,9,10))) print(paste(print.msg,"Warning: Optimization cannot hit goal. ","Goal: ",goal,"Actual generated: ",round(goal.check,digit=2)))
+    if ((goal.check<goal)&(ex.setup$optimization_type %in% c(2,6,7,9,10))) print(paste(print.msg,"Warning: Optimization cannot hit goal. ","Goal:",format(round(goal,digits=0),big.mark=",", trim=T,scientific = F),"Actual generated:",format(round(goal.check,digits=0),big.mark=",", trim=T,scientific = F)))
     if (ex.setup$optimization_type ==10) if (multi.stop==1) print(print.msg,"Warning: Goal seek hit stop criterion.")
     
     summary.sp=curve[!duplicated(curve[,c("bdgt_id"),with=F]),]
     bdgt.left=budget-sum(summary.sp$sp_current)
     if (value_inc_agg$sum[index]==0&goal.seek==0){
       if (sum(curve$flag==0)==0) {
-        print(paste(print.msg,"Warning: Optimization cannot allocate all budget since all response curves have hit their maximum constraints. ","Budget left: ",round(bdgt.left,digit=2),sep=""))
+        print(paste(print.msg,"Warning: Optimization cannot allocate all budget since all response curves have hit their maximum constraints. ","Budget left:",format(round(bdgt.left,digits=0),big.mark=",", trim=T,scientific = F),sep=""))
       }else{
-        print(paste(print.msg,"Warning: Optimization cannot allocate all budget since all response curves have hit their saturation points. ","Budget left: ",round(bdgt.left,digit=2),sep=""))
+        print(paste(print.msg,"Warning: Optimization cannot allocate all budget since all response curves have hit their saturation points. ","Budget left:",format(round(bdgt.left,digits=0),big.mark=",", trim=T,scientific = F),sep=""))
       } 
     }
     
