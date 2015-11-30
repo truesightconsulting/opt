@@ -14,18 +14,18 @@ password=args[9]
 
 
 
-# setwd("d:\\Archives\\Git\\chase\\")
+# setwd("/home/rstudio/nviz/chase/")
 # # main code path
-# main.path="d:\\Archives\\Git\\opt\\"
+# main.path="/home/rstudio/nviz/opt/"
 # opt_id=248
-# client_id=9
+# client_id=10
 # # DB server info
-# db.server="127.0.0.1"
+# db.server="bitnami.cluster-chdidqfrg8na.us-east-1.rds.amazonaws.com"
 # db.name="nviz"
 # port=3306
-# username="root"
-# password="bitnami"
-# .libPaths("/home/rstudio/R/x86_64-pc-linux-gnu-library/3.2")
+# username="Zkdz408R6hll"
+# password="XH3RoKdopf12L4BJbqXTtD2yESgwL$fGd(juW)ed"
+
 
 #######################################################################
 suppressMessages(suppressWarnings(library(gdata)))
