@@ -125,11 +125,11 @@ if (cstr.check==0 & nrow(ex.cstr.input)!=0 ){
   if ("sp_min" %in% names(result.all)) result.all$sp_min[is.na(result.all$sp_min)]=0
   if ("sp_max" %in% names(result.all)) result.all$sp_max[is.na(result.all$sp_max)]=max.level
   if ("sp_plan" %in% names(result.all)) result.all$sp_plan[is.na(result.all$sp_plan)]=0
-  if (ex.setup$optimization_type %in% c(5,9)){
-    if ("sp_min" %in% names(result.all)) result.all=result.all[,sp_min:=sp_min+sp_plan] else
-      result.all=result.all[,sp_min:=sp_plan]
-    if ("sp_max" %in% names(result.all)) result.all=result.all[,sp_max:=sp_max+sp_plan]
-  }
+#   if (ex.setup$optimization_type %in% c(5,9)){
+#     if ("sp_min" %in% names(result.all)) result.all=result.all[,sp_min:=sp_min+sp_plan] else
+#       result.all=result.all[,sp_min:=sp_plan]
+#     if ("sp_max" %in% names(result.all)) result.all=result.all[,sp_max:=sp_max+sp_plan]
+#   }
   
   # update result to ex.cstr
   ex.cstr=merge(ex.cstr[,!names(result.all)[-1],with=F],result.all,by="bdgt_id",all=T)
