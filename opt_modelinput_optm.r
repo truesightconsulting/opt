@@ -58,16 +58,16 @@ print("Note: Checking Constraint Logic")
 check.error=0
 if (nrow(curve)==0){
   check.error=1
-  print(paste(print.msg,"Error: There is no response curve under selected dimensions."))
+  print(paste(print.msg,"Error: There is no response curve under selected dimensions.",sep=""))
 }else if (sum(curve$sp_min[!duplicated(curve[,c("bdgt_id"),with=F])])>budget&ex.setup$optimization_type!=4){
   check.error=1
-  print(paste(print.msg,"Error: Total start spend exceeds total optimization budget."))
+  print(paste(print.msg,"Error: Total start spend exceeds total optimization budget.",sep=""))
 } else if (sum(curve$sp_min>curve$sp_max) !=0&ex.setup$optimization_type!=4) {
   check.error=1
-  print(paste(print.msg,"Error: At least one start spend exceeds its maximum constraint."))
+  print(paste(print.msg,"Error: At least one start spend exceeds its maximum constraint.",sep=""))
 } else if ((sum(curve$sp_max[!duplicated(curve[,c("bdgt_id"),with=F])])<budget)&goal.seek==0&ex.setup$optimization_type!=4){
   check.error=1
-  print(paste(print.msg,"Error: Total optimization budget exceeds total maximum constraint."))
+  print(paste(print.msg,"Error: Total optimization budget exceeds total maximum constraint.",sep=""))
 }else{
   # set current spend
   curve$sp_current=curve$sp_min
@@ -264,8 +264,8 @@ if (nrow(curve)==0){
       print("Note: Optimization reached goal value.")
     }
     
-    if ((goal.check<goal)&(ex.setup$optimization_type %in% c(2,6,7,9,10))) print(paste(print.msg,"Warning: Optimization cannot hit goal. ","Goal:",format(round(goal,digits=0),big.mark=",", trim=T,scientific = F),"Actual generated:",format(round(goal.check,digits=0),big.mark=",", trim=T,scientific = F)))
-    if (ex.setup$optimization_type ==10) if (multi.stop==1) print(print.msg,"Warning: Goal seek hit stop criterion.")
+    if ((goal.check<goal)&(ex.setup$optimization_type %in% c(2,6,7,9,10))) print(paste(print.msg,"Warning: Optimization cannot hit goal. ","Goal:",format(round(goal,digits=0),big.mark=",", trim=T,scientific = F),"Actual generated:",format(round(goal.check,digits=0),big.mark=",", trim=T,scientific = F),sep=""))
+    if (ex.setup$optimization_type ==10) if (multi.stop==1) print(paste(print.msg,"Warning: Goal seek hit stop criterion.",sep=""))
     
     summary.sp=curve[!duplicated(curve[,c("bdgt_id"),with=F]),]
     bdgt.left=budget-sum(summary.sp$sp_current)
