@@ -17,4 +17,7 @@ if (ex.setup$optimization_time==1){
 }else{
   # generate curve
   curve=ex.curve
+  
+  # generate event file
+  source(paste(path,("opt_modelinput_gen_event.r"),sep=""),local=T)
 }

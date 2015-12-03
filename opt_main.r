@@ -34,32 +34,28 @@ for (iter in 1:n){
   # time window error check
   if (ex.setup$optimization_time!=1) check.event.date=0
   
-  if (check.event.date==0){
-    # prepare curve parameters for optm
-    source("opt_input_curve_par.r",local = T)
-    
-    # flag all the selected curves
-    source("opt_input_flag_table.r",local = T)
-    
-    # update min spend from previous iteration for multi-goal seek
-    if (iter>1) source(paste(path,"opt_modelinput_update_minsp.r",sep=""),local = T)
-    
-    # calc final min and max constraints, them merge them with curve, as well as cps
-    source(paste(path,"opt_modelinput_calc_cstr.r",sep=""),local = T)
-    
-    # optmization
-    source(paste(path,"opt_modelinput_optm.r",sep=""),local = T)
-    
-    # re-generate min spend for multi-goal seek
-    if (ex.setup$optimization_type==10) source(paste(path,"opt_modelinput_gen_minsp.r",sep=""),local = T)
-  }
+  # prepare curve parameters for optm
+  source("opt_input_curve_par.r",local = T)
+  
+  # flag all the selected curves
+  source("opt_input_flag_table.r",local = T)
+  
+  # update min spend from previous iteration for multi-goal seek
+  if (iter>1) source(paste(path,"opt_modelinput_update_minsp.r",sep=""),local = T)
+  
+  # calc final min and max constraints, them merge them with curve, as well as cps
+  source(paste(path,"opt_modelinput_calc_cstr.r",sep=""),local = T)
+  
+  # optmization
+  source(paste(path,"opt_modelinput_optm.r",sep=""),local = T)
+  
+  # re-generate min spend for multi-goal seek
+  if (ex.setup$optimization_type==10) source(paste(path,"opt_modelinput_gen_minsp.r",sep=""),local = T)
 }
 
 # output
-if (check.event.date==0){
-  # post-optm Calc & output
-  source("opt_input_post_calc.r",local = T)
-}
+source("opt_input_post_calc.r",local = T)
+
 #save.image("opt_output.Rdata")
 end=Sys.time()-start.time
 print(paste("Note: Run time: ",round(end[[1]],digit=2),attr(end,"units"),sep="")) 
