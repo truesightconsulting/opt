@@ -12,26 +12,41 @@ if (nrow(ex.event)!=0) {
 #   }else{
     temp.event=vector("list",nrow(ex.event))
     for (j in 1:nrow(ex.event)){
-      date.temp=optm.date(ex.event$date_start[j],ex.event$date_end[j])
-      range.wk=date.temp$range.wk
-      out.wk=date.temp$out.wk
-      if (range.wk[1]==range.wk[length(range.wk)] & length(range.wk)!=1) range.wk[length(range.wk)]=-1
+      if (ex.setup$optimization_time==1){
+        date.temp=optm.date(ex.event$date_start[j],ex.event$date_end[j])
+        range.wk=date.temp$range.wk
+        out.wk=date.temp$out.wk
+        if (range.wk[1]==range.wk[length(range.wk)] & length(range.wk)!=1) range.wk[length(range.wk)]=-1
+      }
       sales_count=ex.event[j,dim.event,with=F]
       cj.list=foreach (k=1:ncol(sales_count),.multicombine = T) %do% {
         as.integer(strsplit(sales_count[[k]],',')[[1]])
       }
       sales_count1=do.call(CJ,cj.list)
       setnames(sales_count1,names(sales_count1),names(sales_count))
-      sales_count2=sales_count1[rep(1:nrow(sales_count1),each=length(range.wk))]
+      if (ex.setup$optimization_time==1){
+        sales_count2=sales_count1[rep(1:nrow(sales_count1),each=length(range.wk))]
+      }else sales_count2=sales_count1
       level=rep(ex.event$level[j],nrow(sales_count2))
-      temp.event[[j]]=data.table(sales_count2,week_id=rep(range.wk,nrow(sales_count1)),level=level)
+      if (ex.setup$optimization_time==1){
+        temp.event[[j]]=data.table(sales_count2,week_id=rep(range.wk,nrow(sales_count1)),level=level)
+      }else temp.event[[j]]=data.table(sales_count2,level=level)
       setnames(temp.event[[j]],"level",paste("level",j,sep="_"))
-    } 
-    temp.output=Reduce(function(...) merge(...,all=TRUE,by=c(dim.event,"week_id")), temp.event)
-    temp.output[is.na(temp.output)]=1
-    input.event=data.table(temp.output[,c(dim.event,"week_id"),with=F],level=apply(temp.output[,!c(dim.event,"week_id"),with=F],1,prod))
-    
-    curve=merge(curve,input.event,by=c(dim.event,"week_id"),all.x=T)
+    }
+    if (ex.setup$optimization_time==1){
+      temp.output=Reduce(function(...) merge(...,all=TRUE,by=c(dim.event,"week_id")), temp.event)
+      temp.output[is.na(temp.output)]=1
+      input.event=data.table(temp.output[,c(dim.event,"week_id"),with=F],level=apply(temp.output[,!c(dim.event,"week_id"),with=F],1,prod))
+      
+      curve=merge(curve,input.event,by=c(dim.event,"week_id"),all.x=T)
+    }else {
+      temp.output=Reduce(function(...) merge(...,all=TRUE,by=c(dim.event)), temp.event)
+      temp.output[is.na(temp.output)]=1
+      input.event=data.table(temp.output[,c(dim.event),with=F],level=apply(temp.output[,!c(dim.event),with=F],1,prod))
+      
+      curve=merge(curve,input.event,by=c(dim.event),all.x=T)
+    }
+
     curve$level[is.na(curve$level)]=1
     curve[[beta]]=curve[[beta]]*curve$level
   # }
