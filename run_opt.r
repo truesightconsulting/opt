@@ -53,5 +53,6 @@ print.msg=""
 source(paste(main.path,"opt_main.r",sep=""),local=T)
 end_time=Sys.time()-start_time
 print(paste("Note: Overall Run time:",round(end_time[[1]],digit=0),attr(end_time,"units"))) 
+dbGetQuery(conn,paste("update opt_optimizations set completed=NOW() where id=",opt_id,sep=""))
 if (db.usage) dbDisconnect(conn)
 
