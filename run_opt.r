@@ -51,7 +51,7 @@ if (db.usage) keep(db.usage,conn,opt_id,client_id,main.path,start_time,sure = T)
 run.cstr=F
 print.msg=""
 source(paste(main.path,"opt_main.r",sep=""),local=T)
-
-if (db.usage) dbDisconnect(conn)
 end_time=Sys.time()-start_time
-print(paste("Note: Run time:",round(end_time[[1]],digit=0),attr(end_time,"units"))) 
+print(paste("Note: Overall Run time:",round(end_time[[1]],digit=0),attr(end_time,"units"))) 
+if (db.usage) dbDisconnect(conn)
+
