@@ -14,13 +14,13 @@ password=args[9]
 
 
 
-# setwd("/home/rstudio/nviz/kohls_tab/")
+# setwd("d:\\Archives\\Git\\kohls_tab\\")
 # # True is to staging DB and F is to production DB
 # is.staging=T 
 # # main code path
-# main.path="/home/rstudio/nviz/opt/"
-# opt_id=268
-# client_id=14
+# main.path="d:\\Archives\\Git\\opt\\"
+# opt_id=278
+# client_id=13
 # # DB server info
 # 
 # db.name="nviz"
@@ -37,6 +37,7 @@ password=args[9]
 
 
 #######################################################################
+start_time=Sys.time()
 suppressMessages(suppressWarnings(library(gdata)))
 suppressMessages(suppressWarnings(library(RMySQL)))
 MySQL(max.con=900)
@@ -46,9 +47,11 @@ if (db.usage) conn <- dbConnect(MySQL(),user=username, password=password,dbname=
 run.cstr=T
 print.msg="cstr"
 source(paste(main.path,"opt_main_gen_cstr.r",sep=""),local=T)
-if (db.usage) keep(db.usage,conn,opt_id,client_id,main.path,sure = T) else keep(db.usage,main.path,sure=T)
+if (db.usage) keep(db.usage,conn,opt_id,client_id,main.path,start_time,sure = T) else keep(db.usage,main.path,sure=T)
 run.cstr=F
 print.msg=""
 source(paste(main.path,"opt_main.r",sep=""),local=T)
 
 if (db.usage) dbDisconnect(conn)
+end_time=Sys.time()-start_time
+print(paste("Note: Run time:",round(end_time[[1]],digit=0),attr(end_time,"units"))) 
