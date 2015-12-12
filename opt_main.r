@@ -1,11 +1,7 @@
 #setwd("d:\\Users\\xzhou\\Desktop\\comcast opt test\\")
 print("Note: Optimization Process")
 start.time=Sys.time()
-suppressMessages(suppressWarnings(library(bit64)))
-suppressMessages(suppressWarnings(library(data.table)))
-suppressMessages(suppressWarnings(library(reshape2)))
-suppressMessages(suppressWarnings(library(stringr)))
-suppressMessages(suppressWarnings(library(jsonlite)))
+
 # Load in data
 source("opt_input_load.r",local = T)
 

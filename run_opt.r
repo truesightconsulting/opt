@@ -40,6 +40,13 @@ password=args[9]
 start_time=Sys.time()
 suppressMessages(suppressWarnings(library(gdata)))
 suppressMessages(suppressWarnings(library(RMySQL)))
+suppressMessages(suppressWarnings(library(bit64)))
+suppressMessages(suppressWarnings(library(data.table)))
+suppressMessages(suppressWarnings(library(doSNOW)))
+suppressMessages(suppressWarnings(library(reshape2)))
+suppressMessages(suppressWarnings(library(stringr)))
+suppressMessages(suppressWarnings(library(jsonlite)))
+suppressMessages(suppressWarnings(library(rCharts)))
 MySQL(max.con=900)
 # setup for opt on DB
 db.usage=T

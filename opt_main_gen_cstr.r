@@ -1,9 +1,6 @@
 #setwd("d:\\Archives\\R Code\\OPTM\\new constrant\\optm fios\\")
 print("Note: Generating Constraints")
 start.time=Sys.time()
-suppressMessages(suppressWarnings(library(bit64)))
-suppressMessages(suppressWarnings(library(data.table)))
-suppressMessages(suppressWarnings(library(doSNOW)))
 
 cstr.name=c("sp_min","sp_max","sp_plan")
 cutoff.cl=4 # if no. of row is more then this number, then build that number of clusters
