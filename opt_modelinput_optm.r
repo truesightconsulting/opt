@@ -264,7 +264,7 @@ if (nrow(curve)==0){
       print("Note: Optimization reached goal value.")
     }
     
-    if ((goal.check<goal)&(ex.setup$optimization_type %in% c(2,6,7,9,10))) print(paste(print.msg,"Warning: Optimization cannot hit goal. ","Goal:",format(round(goal,digits=0),big.mark=",", trim=T,scientific = F),"Actual generated:",format(round(goal.check,digits=0),big.mark=",", trim=T,scientific = F),sep=""))
+    if ((goal.check<goal)&(ex.setup$optimization_type %in% c(2,6,7,9,10))) print(paste(print.msg,"Warning: Optimization cannot hit goal. ","Goal:",format(round(goal,digits=0),big.mark=",", trim=T,scientific = F)," Actual generated:",format(round(goal.check,digits=0),big.mark=",", trim=T,scientific = F),sep=""))
     if (ex.setup$optimization_type ==10) if (multi.stop==1) print(paste(print.msg,"Warning: Goal seek hit stop criterion.",sep=""))
     
     summary.sp=curve[!duplicated(curve[,c("bdgt_id"),with=F]),]
