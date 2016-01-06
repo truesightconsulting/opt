@@ -1,13 +1,16 @@
 # calc final min and max constraints
 # calculate final max constraint 1,min*%; 2,missing then max level 3,other then max level 4, compare with user input max
 print("Note: Generating Final Constraints")
-ex.cstr$sp_max[is.na(ex.cstr$sp_max)]=max.level
-ex.cstr$sp_min[is.na(ex.cstr$sp_min)]=0
-ex.cstr.hidden$sp_max_h[is.na(ex.cstr.hidden$sp_max_h)]=max.level
-ex.cstr.hidden$sp_min_h[is.na(ex.cstr.hidden$sp_min_h)]=0
-#ex.cstr.hidden$percent_max[is.na(ex.cstr.hidden$percent_max)]=max.level
-ex.cstr.final=merge(ex.cstr,ex.cstr.hidden[,c("bdgt_id","sp_max_h","percent_max","sp_min_h"),with=F],
-                    by="bdgt_id",all.x=T)
+# ex.cstr$sp_max[is.na(ex.cstr$sp_max)]=max.level
+# ex.cstr$sp_min[is.na(ex.cstr$sp_min)]=0
+# ex.cstr.hidden$sp_max_h[is.na(ex.cstr.hidden$sp_max_h)]=max.level
+# ex.cstr.hidden$sp_min_h[is.na(ex.cstr.hidden$sp_min_h)]=0
+ex.cstr.final=merge(ex.cstr[,c("bdgt_id","sp_plan","sp_min","sp_max"),with=F],ex.cstr.hidden,
+                    by="bdgt_id",all.y=T)
+ex.cstr.final$sp_max[is.na(ex.cstr.final$sp_max)]=max.level
+ex.cstr.final$sp_min[is.na(ex.cstr.final$sp_min)]=0
+ex.cstr.final$sp_max_h[is.na(ex.cstr.final$sp_max_h)]=max.level
+ex.cstr.final$sp_min_h[is.na(ex.cstr.final$sp_min_h)]=0
 
 # hidden
 sp_max_h_final=rep(max.level,nrow(ex.cstr.final))
