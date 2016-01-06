@@ -129,7 +129,7 @@ if (cstr.check==0 & nrow(ex.cstr.input)!=0 ){
 #   }
   
   # update result to ex.cstr
-  ex.cstr=merge(ex.cstr[,!names(result.all)[-1],with=F],result.all,by="bdgt_id",all=T)
+  ex.cstr=merge(ex.cstr[,!names(result.all)[-1],with=F],result.all,by="bdgt_id",all.y=T)
   ex.cstr=data.table(opt_id=rep(opt_id,nrow(ex.cstr)),ex.cstr)
   if (db.usage){
     dbGetQuery(conn,paste("delete from opt_userinput_cstr_output where opt_id=",opt_id,sep=""))
