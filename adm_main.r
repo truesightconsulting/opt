@@ -484,7 +484,7 @@ if (db.usage){
 # modelinput output and bdgt table
 print("Note: Creating Output relalted Tables")
 bdgt=data.table(client_id=client_id,bdgt_dim=adm.setup[attribute=="bdgt_dim"]$value)
-adm.output=fread("adm_output.csv",na.strings="NULL")
+adm.output=fread("adm_output.csv",na.strings="NULL",colClasses =list(character="filter"))
 output=data.table(client_id=rep(client_id,nrow(adm.output)),adm.output)
 if (db.usage){
   dbGetQuery(conn,paste("delete from opt_modelinput_bdgt where client_id=",client_id,sep=""))
