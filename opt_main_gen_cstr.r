@@ -88,8 +88,13 @@ if (cstr.check==0 & nrow(ex.cstr.input)!=0 ){
           source(paste(path,"opt_modelinput_optm.r",sep=""),local=T)
           
           # save result
-          temp.output=summary.sp[,c("bdgt_id","sp_current"),with=F]
-          setnames(temp.output,"sp_current",paste("sp_current_",iter,sep=""))
+          if(error.missingcurve==0){
+            temp.output=summary.sp[,c("bdgt_id","sp_current"),with=F]
+            setnames(temp.output,"sp_current",paste("sp_current_",iter,sep=""))
+          }else {
+            error.sim=error.sim+1
+            temp.output=NULL
+          }
           temp.output
         }# loop of each row of constaint
       
@@ -97,7 +102,7 @@ if (cstr.check==0 & nrow(ex.cstr.input)!=0 ){
       
       print("Note: Transforming Result")
       # merge results and generate final constraint table
-      temp.output=Reduce(function(...) merge(...,all=TRUE,by="bdgt_id"), result[[names(result)[loop.cstr]]])
+      temp.output=Reduce(function(...) merge(...,all=TRUE,by="bdgt_id"),Filter(Negate(is.null), result[[names(result)[loop.cstr]]]))
       
       if (names(result)[loop.cstr]=="sp_min"){
         temp.output[is.na(temp.output)]=0
