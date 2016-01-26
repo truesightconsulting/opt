@@ -56,9 +56,13 @@ if (ex.setup$optimization_type==3) budget=sum(curve$sp_plan[!duplicated(curve[,c
 # check constrinat error
 print("Note: Checking Constraint Logic")
 check.error=0
+error.missingcurve=0
 if (nrow(curve)==0){
   check.error=1
   print(paste(print.msg,"Error: There is no response curve under selected dimensions.",sep=""))
+  if (print.msg=="cstr") {
+    error.missingcurve=1
+  }
 }else if (sum(curve$sp_min[!duplicated(curve[,c("bdgt_id"),with=F])])>budget&ex.setup$optimization_type!=4){
   check.error=1
   print(paste(print.msg,"Error: Total start spend exceeds total optimization budget.",sep=""))
