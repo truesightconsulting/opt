@@ -54,7 +54,7 @@ if (type %in% c("cstr","plan")){
       if (!(sum(is.na(data$date_start))==0 & sum(is.na(data$date_end))==0)){
         check.value=1
         print("Error: Missing values are not allowed in date_start and date_end columns. Please check your file.")
-      }else if (sum(date.range<7 | date.range>366)!=0){
+      }else if (sum(date.range<6 | date.range>366)!=0){
           check.value=1
           print("Error: Date range must be in between 7 - 366 days.")
       }
@@ -115,7 +115,7 @@ if (type %in% c("cstr","plan")){
     if (!(sum(is.na(data$date_start))==0 & sum(is.na(data$date_end))==0)){
       check.value=1
       print("Error: Missing values are not allowed in date_start and date_end columns. Please check your file.")
-    }else if (sum(date.range<7 | date.range>366)!=0){
+    }else if (sum(date.range<6 | date.range>366)!=0){
       check.value=1
       print("Error: Date range must be in between 7 - 366 days.")
     }
