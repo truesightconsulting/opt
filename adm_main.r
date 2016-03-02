@@ -284,6 +284,7 @@ if(as.numeric(adm.setup[attribute=="calendar"]$value)==1){
     # upload curve to db
     dbGetQuery(conn,paste("delete from opt_modelinput_hidden_cstr where client_id=",client_id,sep=""))
     dbWriteTable(conn,"opt_modelinput_hidden_cstr",temp,append=T,row.names = F,header=F)
+    write.csv(temp,"opt_modelinput_hidden_cstr.csv",row.names = F,na="NULL")
   }else write.csv(temp,"opt_modelinput_hidden_cstr.csv",row.names = F,na="NULL")
   # cstr output table
   temp=copy(ex.cstr.hidden)
@@ -326,6 +327,7 @@ if(as.numeric(adm.setup[attribute=="calendar"]$value)==1){
     # upload curve to db
     dbGetQuery(conn,paste("delete from opt_modelinput_hidden_cstr where client_id=",client_id,sep=""))
     dbWriteTable(conn,"opt_modelinput_hidden_cstr",temp,append=T,row.names = F,header=F)
+    write.csv(temp,"opt_modelinput_hidden_cstr.csv",row.names = F,na="NULL")
   }else write.csv(temp,"opt_modelinput_hidden_cstr.csv",row.names = F,na="NULL")
   # cstr output table
   temp=copy(ex.cstr.hidden)
