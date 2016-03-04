@@ -284,6 +284,10 @@ if(as.numeric(adm.setup[attribute=="calendar"]$value)==1){
     # upload curve to db
     dbGetQuery(conn,paste("delete from opt_modelinput_hidden_cstr where client_id=",client_id,sep=""))
     dbWriteTable(conn,"opt_modelinput_hidden_cstr",temp,append=T,row.names = F,header=F)
+    # hidden cstr template
+    temp.dim1=dbGetQuery(conn,paste("select dim from opt_modules_dim where flag_cstr=1 and client_id=",client_id))$dim
+    temp.dim1=paste(temp.dim1,"_name",sep="")
+    temp=merge(ex.curve[!duplicated(bdgt_id)][,c(temp.dim1,"bdgt_id"),with=F],temp,by="bdgt_id",all.y=T)
     write.csv(temp,"opt_modelinput_hidden_cstr.csv",row.names = F,na="NULL")
   }else write.csv(temp,"opt_modelinput_hidden_cstr.csv",row.names = F,na="NULL")
   # cstr output table
@@ -327,6 +331,10 @@ if(as.numeric(adm.setup[attribute=="calendar"]$value)==1){
     # upload curve to db
     dbGetQuery(conn,paste("delete from opt_modelinput_hidden_cstr where client_id=",client_id,sep=""))
     dbWriteTable(conn,"opt_modelinput_hidden_cstr",temp,append=T,row.names = F,header=F)
+    # hidden cstr template
+    temp.dim1=dbGetQuery(conn,paste("select dim from opt_modules_dim where flag_cstr=1 and client_id=",client_id))$dim
+    temp.dim1=paste(temp.dim1,"_name",sep="")
+    temp=merge(ex.curve[!duplicated(bdgt_id)][,c(temp.dim1,"bdgt_id"),with=F],temp,by="bdgt_id",all.y=T)
     write.csv(temp,"opt_modelinput_hidden_cstr.csv",row.names = F,na="NULL")
   }else write.csv(temp,"opt_modelinput_hidden_cstr.csv",row.names = F,na="NULL")
   # cstr output table
