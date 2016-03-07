@@ -61,12 +61,16 @@ if (nrow(ex.cstr.input)!=0){
         temp.output=Reduce(function(...) merge(...,all=TRUE,by="bdgt_id"),Filter(Negate(is.null),
                             list(ex.cstr[,c("bdgt_id",i),with=F],
                                  temp.cstr.output[,c("bdgt_id",i),with=F])))
-        if (i=="sp_max")
-          result[[i]]=data.table(bdgt_id=temp.output[[1]],sp_max=do.call(pmin, temp.output[,-1,with=F])) else if
-          (i=="sp_min")
-            result[[i]]=data.table(bdgt_id=temp.output[[1]],sp_min=do.call(pmax, temp.output[,-1,with=F])) else if
-          (i=="sp_plan")
-              result[[i]]=data.table(bdgt_id=temp.output[[1]],sp_plan=do.call(pmax, temp.output[,-1,with=F]))
+        if (i=="sp_max"){
+          temp.output[is.na(temp.output)]=max.level
+          result[[i]]=data.table(bdgt_id=temp.output[[1]],sp_max=do.call(pmin, temp.output[,-1,with=F])) 
+        }else if (i=="sp_min"){
+          temp.output[is.na(temp.output)]=0
+          result[[i]]=data.table(bdgt_id=temp.output[[1]],sp_min=do.call(pmax, temp.output[,-1,with=F])) 
+        }else if (i=="sp_plan"){
+          temp.output[is.na(temp.output)]=0
+          result[[i]]=data.table(bdgt_id=temp.output[[1]],sp_plan=do.call(pmax, temp.output[,-1,with=F]))
+        }
       }
       result.all=Reduce(function(...) merge(...,all=TRUE,by="bdgt_id"), result)
       result.all$sp_min[is.na(result.all$sp_min)]=0
