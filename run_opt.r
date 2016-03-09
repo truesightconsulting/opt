@@ -14,13 +14,13 @@ password=args[9]
 
 
 
-# setwd("/home/rstudio/nviz/kohls_tab/")
+# setwd("c:\\Users\\XinZhou\\Documents\\GitHub\\kohls\\")
 # # True is to staging DB and F is to production DB
-# is.staging=F 
+# is.staging=T
 # # main code path
-# main.path="/home/rstudio/nviz/opt/"
+# main.path="c:\\Users\\XinZhou\\Documents\\GitHub\\opt\\"
 # opt_id=496
-# client_id=11
+# client_id=27
 # # DB server info
 # 
 # db.name="nviz"
@@ -31,6 +31,7 @@ password=args[9]
 #   password="bitnami"
 # }else{
 #   db.server="bitnami.cluster-chdidqfrg8na.us-east-1.rds.amazonaws.com"
+#   db.server="127.0.0.1"
 #   username="Zkdz408R6hll"
 #   password="XH3RoKdopf12L4BJbqXTtD2yESgwL$fGd(juW)ed"
 # }

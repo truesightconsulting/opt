@@ -224,6 +224,53 @@ for (i in 1:length(dim)){
   }else write.csv(temp,paste("opt_input_dim_",file.name,".csv",sep=""),row.names = F,na="NULL")
 }
 
+# modules and modules dim table
+print("Note: Creating Module Relalted Tables")
+if (db.usage){
+  # modules
+  adm.modules=fread("adm_modules.csv")
+  temp=adm.modules[,"label",with=F]
+  # check talbe existing or not first, then insert into it
+  tb.name="opt_label_modules"
+  value=dbGetQuery(conn,paste("select label from ",tb.name,sep=""))[,1]
+  index=!(temp$label %in% value)
+  temp=temp[index]
+  if (nrow(temp)!=0) {
+    print(paste("Note: New labels Inserted in ",tb.name,sep=""))
+    dbWriteTable(conn,tb.name,temp,append=T,row.names = F,header=F)
+  }
+  # fetch match table
+  temp=data.table(dbGetQuery(conn,paste("select * from ",tb.name,sep="")))
+  temp=merge(adm.modules,temp,by="label",all.x=T)
+  temp$client_id=rep(client_id,nrow(temp))
+  temp=temp[,!"label",with=F]
+  setnames(temp,"id","opt_label_module_id")
+  dbGetQuery(conn,paste("delete from opt_modules where client_id=",client_id,sep=""))
+  dbWriteTable(conn,"opt_modules",temp,append=T,row.names = F,header=F)
+  
+  # modules dim
+  adm.modules_dim=fread("adm_modules_dim.csv")
+  adm.modules_dim$dim=unlist(strsplit(adm.modules_dim$dim,"_id"))
+  temp=adm.modules_dim[,"label",with=F]
+  # check talbe existing or not first, then insert into it
+  tb.name="opt_label_modules_dim"
+  value=dbGetQuery(conn,paste("select label from ",tb.name,sep=""))[,1]
+  index=!(temp$label %in% value)
+  temp=temp[index]
+  if (nrow(temp)!=0) {
+    print(paste("Note: New labels Inserted in ",tb.name,sep=""))
+    dbWriteTable(conn,tb.name,temp,append=T,row.names = F,header=F)
+  }
+  # fetch match table
+  temp=data.table(dbGetQuery(conn,paste("select * from ",tb.name,sep="")))
+  temp=merge(adm.modules_dim,temp,by="label",all.x=T)
+  temp$client_id=rep(client_id,nrow(temp))
+  temp=temp[,!"label",with=F]
+  setnames(temp,"id","opt_label_modules_dim_id")
+  dbGetQuery(conn,paste("delete from opt_modules_dim where client_id=",client_id,sep=""))
+  dbWriteTable(conn,"opt_modules_dim",temp,append=T,row.names = F,header=F)
+}
+
 # user input cstr
 print("Note: Creating Constraint Input Table")
 temp.dim=strsplit(adm.setup[attribute=="bdgt_dim"]$value,",")[[1]]
@@ -507,52 +554,6 @@ if (db.usage){
   write.csv(ex.output,"opt_modelinput_output.csv",row.names=F,na="NULL")
 }
 
-# modules and modules dim table
-print("Note: Creating Module Relalted Tables")
-if (db.usage){
-  # modules
-  adm.modules=fread("adm_modules.csv")
-  temp=adm.modules[,"label",with=F]
-  # check talbe existing or not first, then insert into it
-  tb.name="opt_label_modules"
-  value=dbGetQuery(conn,paste("select label from ",tb.name,sep=""))[,1]
-  index=!(temp$label %in% value)
-  temp=temp[index]
-  if (nrow(temp)!=0) {
-    print(paste("Note: New labels Inserted in ",tb.name,sep=""))
-    dbWriteTable(conn,tb.name,temp,append=T,row.names = F,header=F)
-  }
-  # fetch match table
-  temp=data.table(dbGetQuery(conn,paste("select * from ",tb.name,sep="")))
-  temp=merge(adm.modules,temp,by="label",all.x=T)
-  temp$client_id=rep(client_id,nrow(temp))
-  temp=temp[,!"label",with=F]
-  setnames(temp,"id","opt_label_module_id")
-  dbGetQuery(conn,paste("delete from opt_modules where client_id=",client_id,sep=""))
-  dbWriteTable(conn,"opt_modules",temp,append=T,row.names = F,header=F)
-  
-  # modules dim
-  adm.modules_dim=fread("adm_modules_dim.csv")
-  adm.modules_dim$dim=unlist(strsplit(adm.modules_dim$dim,"_id"))
-  temp=adm.modules_dim[,"label",with=F]
-  # check talbe existing or not first, then insert into it
-  tb.name="opt_label_modules_dim"
-  value=dbGetQuery(conn,paste("select label from ",tb.name,sep=""))[,1]
-  index=!(temp$label %in% value)
-  temp=temp[index]
-  if (nrow(temp)!=0) {
-    print(paste("Note: New labels Inserted in ",tb.name,sep=""))
-    dbWriteTable(conn,tb.name,temp,append=T,row.names = F,header=F)
-  }
-  # fetch match table
-  temp=data.table(dbGetQuery(conn,paste("select * from ",tb.name,sep="")))
-  temp=merge(adm.modules_dim,temp,by="label",all.x=T)
-  temp$client_id=rep(client_id,nrow(temp))
-  temp=temp[,!"label",with=F]
-  setnames(temp,"id","opt_label_modules_dim_id")
-  dbGetQuery(conn,paste("delete from opt_modules_dim where client_id=",client_id,sep=""))
-  dbWriteTable(conn,"opt_modules_dim",temp,append=T,row.names = F,header=F)
-}
 
 # other input tables from input.list
 print("Note: Creating Other Input Tables")
