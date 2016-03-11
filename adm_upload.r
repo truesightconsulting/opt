@@ -74,7 +74,12 @@ if (type %in% c("cstr","plan")){
         match=dbGetQuery(conn,paste("select * from opt_label_",strsplit(temp.dim,"_id")[[1]],sep=""))
         for (j in 1:nrow(data)){
           temp.name=unlist(strsplit(data[[temp.dim]][j],","))
-          data[[temp.dim]][j]=paste(merge(data.table(label=temp.name),match,by="label")$id,collapse = ",")
+          if (temp.name[1]=="All"){
+            temp.str=strsplit(temp.dim,"_id")[[1]][1]
+            temp.dim.table=paste("opt_input_dim_",substr(temp.str, 1, nchar(temp.str)-1),sep="")
+            temp.id=dbGetQuery(conn,paste("select distinct",temp.dim,"from",temp.dim.table,"where client_id=",client_id))[[1]]
+            data[[temp.dim]][j]=paste(temp.id,collapse = ",")
+          }else data[[temp.dim]][j]=paste(merge(data.table(label=temp.name),match,by="label")$id,collapse = ",")
         }
       }
       # create name id
@@ -105,7 +110,7 @@ if (type %in% c("cstr","plan")){
   }else if (save.name %in% save.table$name){
     check.value=1
     print("Error: The name already exists. Please select another name.")
-  }else if (sum(is.na(data))!=0){
+  }else if (sum(is.na(data[,!c("date_start","date_end"),with=F]))!=0){
     check.value=1
     print("Error:  Missing values are not allowed. Please check your file.")
   }else if (is.time==1){
@@ -121,16 +126,6 @@ if (type %in% c("cstr","plan")){
     }
   }
   if (check.value==0){
-    # convert label to id
-    dim=names(data)[grepl("_id",names(data))]
-    for (i in 1:length(dim)){
-      temp.dim=dim[i]
-      match=dbGetQuery(conn,paste("select * from opt_label_",strsplit(temp.dim,"_id")[[1]],sep=""))
-      for (j in 1:nrow(data)){
-        temp.name=unlist(strsplit(data[[temp.dim]][j],","))
-        data[[temp.dim]][j]=paste(merge(data.table(label=temp.name),match,by="label")$id,collapse = ",")
-      }
-    }
     # convert level to value
     match.level=dbGetQuery(conn,paste("select label,value from opt_input_event_level a left join opt_label_event_level b on a.event_level_id=b.id where client_id=",client_id,sep=""))
     setnames(data,"level","label")
@@ -143,14 +138,19 @@ if (type %in% c("cstr","plan")){
       match=dbGetQuery(conn,paste("select * from opt_label_",strsplit(temp.dim,"_id")[[1]],sep=""))
       for (j in 1:nrow(data)){
         temp.name=unlist(strsplit(data[[temp.dim]][j],","))
-        data[[temp.dim]][j]=paste(merge(data.table(label=temp.name),match,by="label")$id,collapse = ",")
+        if (temp.name[1]=="All"){
+          temp.str=strsplit(temp.dim,"_id")[[1]][1]
+          temp.dim.table=paste("opt_input_dim_",substr(temp.str, 1, nchar(temp.str)-1),sep="")
+          temp.id=dbGetQuery(conn,paste("select distinct",temp.dim,"from",temp.dim.table,"where client_id=",client_id))[[1]]
+          data[[temp.dim]][j]=paste(temp.id,collapse = ",")
+        }else data[[temp.dim]][j]=paste(merge(data.table(label=temp.name),match,by="label")$id,collapse = ",")
       }
     }
-    # convert date format
-    if (is.time==1){
-      data$date_start=as.Date(data$date_start,"%m/%d/%Y")
-      data$date_end=as.Date(data$date_end,"%m/%d/%Y")
-    }
+    # # convert date format
+    # if (is.time==1){
+    #   data$date_start=as.Date(data$date_start,"%m/%d/%Y")
+    #   data$date_end=as.Date(data$date_end,"%m/%d/%Y")
+    # }
     # create name id
     dbWriteTable(conn,paste("opt_",type,sep=""),data.table(client_id=client_id,user_id=user_id,name=save.name,
                                                            created=format(Sys.time(),"%Y-%m-%d %T")),append=T,row.names = F,header=F)
