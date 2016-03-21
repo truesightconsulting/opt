@@ -108,9 +108,11 @@ if (db.usage){
   # create a upload template for cps and a lookup table for other upload templates
   upload.cps=ex.curve[,c(bdgt_dim,paste(unlist(strsplit(bdgt_dim,"_id")),"_name",sep = ""),"bdgt_id"),with=F]
   upload.cps$cps=rep("",nrow(upload.cps))
+  upload.cps=unique(upload.cps)
   write.csv(upload.cps,"upload_cps.csv",row.names = F)
   upload.lookup=ex.curve[,names(ex.curve)[grepl("_name",names(ex.curve))],with=F]
   upload.lookup=upload.lookup[,!c("curvegroup_name","all_name"),with=F]
+  upload.lookup=unique(upload.lookup)
   write.csv(upload.lookup,"upload_lookup.csv",row.names = F)
 
   # upload curve to db
