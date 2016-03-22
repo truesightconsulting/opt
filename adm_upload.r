@@ -24,6 +24,7 @@ if (type %in% c("cstr","plan")){
         check.value=1
       }
       sp_min[is.na(sp_min)]=inc
+      sp_min[sp_min==0]=inc
       sp_max[is.na(sp_max)]=1e+10
       sp_max[sp_max==0]=inc
       if (sum(sp_min<inc | sp_max<inc)!=0) {
