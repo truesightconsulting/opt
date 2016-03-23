@@ -2,9 +2,12 @@
 if (type %in% c("cstr","plan")){
   data=fread(file.name,na.strings = "")
   # check
+  index=duplicated(data[,c("date_start","date_end",names(data)[grep("_id",names(data))]),with=F])
   save.table=dbGetQuery(conn,paste("select * from opt_",type," where client_id=",client_id,sep=""))
   save.col=dbGetQuery(conn,paste("show columns from opt_",type,"_save",sep=""))$Field
-  if(sum(!names(data) %in% save.col)!=0){
+  if (any(index)){
+    print("Error:  There is dimension duplication in your file. Please check.")
+  }else if(sum(!names(data) %in% save.col)!=0){
     print("Error: There is invalid column name. Please check your file")
   }else if (save.name %in% save.table$name){
     print("Error: The name already exists. Please select another name.")
@@ -102,10 +105,14 @@ if (type %in% c("cstr","plan")){
   data=fread(file.name,na.strings = "")
   # check
   check.value=0
+  index=duplicated(data[,c("date_start","date_end",names(data)[grep("_id",names(data))]),with=F])
   save.table=dbGetQuery(conn,paste("select * from opt_",type," where client_id=",client_id,sep=""))
   save.col=dbGetQuery(conn,paste("show columns from opt_",type,"_save",sep=""))$Field
   is.time=dbGetQuery(conn,paste("select optimization_time from opt_input_setup where client_id=",client_id,sep=""))$optimization_time
-  if(sum(!names(data) %in% save.col)!=0){
+  if (any(index)){
+    check.value=1
+    print("Error:  There is dimension duplication in your file. Please check.")
+  }else if(sum(!names(data) %in% save.col)!=0){
     check.value=1
     print("Error: There is invalid column name. Please check your file")
   }else if (save.name %in% save.table$name){
@@ -165,12 +172,14 @@ if (type %in% c("cstr","plan")){
 }else if (type=="cps"){
   data=fread(file.name,na.strings = "")
   # check
+  index=duplicated(data[,c(names(data)[grep("_id",names(data))]),with=F])
   save.table=dbGetQuery(conn,paste("select * from opt_",type," where client_id=",client_id,sep=""))
   save.col=dbGetQuery(conn,paste("show columns from opt_",type,"_save",sep=""))$Field
   temp.col=names(data)
   temp.col=temp.col[!grepl("_name",temp.col)]
-
-  if(sum(!temp.col %in% save.col)!=0){
+  if (any(index)){
+    print("Error:  There is dimension duplication in your file. Please check.")
+  }else if(sum(!temp.col %in% save.col)!=0){
     print("Error: There is invalid column name. Please check your file")
   }else if (save.name %in% save.table$name){
     print("Error: The name already exists. Please select another name.")
