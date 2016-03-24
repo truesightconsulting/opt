@@ -126,7 +126,10 @@ if (nrow(curve)==0){
   
   # optm loop
   if(round(loop/20)==0) int=5 else int=round(loop/20)
-  if (loop==0 | ex.setup$optimization_type==4 | check.goal.ini==1) {
+  if (loop<0){
+    check.error=1
+    print(paste("Error: There is confilict in constraint setup. Please check it or contanct us for assistance.",sep=""))
+  }else if (loop==0 | ex.setup$optimization_type==4 | check.goal.ini==1) {
     summary.sp=curve[!duplicated(curve[,c("bdgt_id"),with=F]),]
     print("Note: Optimization is completed.")
     if (check.goal.ini==1) print("Note: Optimization reached goal value.")

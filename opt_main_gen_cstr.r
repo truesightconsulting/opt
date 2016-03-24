@@ -43,11 +43,7 @@ if (nrow(ex.cstr.input)!=0){
       temp.cstr.output=ex.cstr.input[,c("sp_min","sp_max","sp_plan","opt_id",dim.cstr),with=F]
       for (k in which(sapply(temp.cstr.output,is.character))) set(temp.cstr.output, j=k, value=as.integer(temp.cstr.output[[k]]))
       temp.cstr.output=merge(ex.cstr[,c("client_id","bdgt_id",dim.cstr),with=F],temp.cstr.output,by=dim.cstr,all.y=T)[,!"client_id",with=F]
-      if (db.usage){
-        dbGetQuery(conn,paste("delete from opt_userinput_cstr_output where opt_id=",opt_id,sep=""))
-        dbWriteTable(conn,"opt_userinput_cstr_output",temp.cstr.output,append=T,row.names = F,header=F)
-      } else
-        write.csv(temp.cstr.output,"opt_input_cstr_output.csv",row.names=F,na="")
+      ex.cstr=temp.cstr.output
     }else if (allone.check==F & ex.setup$optimization_time==2){
       # all one part
       temp.cstr.output=ex.cstr.input[cstr.index==0,c("sp_min","sp_max","sp_plan","opt_id",dim.cstr),with=F]
@@ -80,21 +76,17 @@ if (nrow(ex.cstr.input)!=0){
       ex.cstr=data.table(dbGetQuery(conn,paste("select * from opt_input_cstr_output where client_id=",client_id,sep="")))
       ex.cstr=merge(ex.cstr[,!names(result.all)[-1],with=F],result.all,by="bdgt_id",all.y=T)
       ex.cstr=data.table(opt_id=rep(opt_id,nrow(ex.cstr)),ex.cstr)
-      
-      if (db.usage){
-        dbGetQuery(conn,paste("delete from opt_userinput_cstr_output where opt_id=",opt_id,sep=""))
-        dbWriteTable(conn,"opt_userinput_cstr_output",ex.cstr[,!c("client_id","id"),with=F],append=T,row.names = F,header=F)
-      } else
-        write.csv(ex.cstr,"opt_input_cstr_output.csv",row.names=F,na="")
-      
+      ex.cstr=ex.cstr[,!c("client_id","id"),with=F]
     }else if (ex.setup$optimization_time==1){
       source(paste(main.path,"opt_modelinput_gen_cstr.r",sep=""),local=T)
-      if (db.usage){
-        dbGetQuery(conn,paste("delete from opt_userinput_cstr_output where opt_id=",opt_id,sep=""))
-        dbWriteTable(conn,"opt_userinput_cstr_output",ex.cstr[,!c("client_id","id"),with=F],append=T,row.names = F,header=F)
-      } else
-        write.csv(ex.cstr,"opt_input_cstr_output.csv",row.names=F,na="")
+      ex.cstr=ex.cstr[,!c("client_id","id"),with=F]
     }
+    # upload to DB
+    if (db.usage){
+      dbGetQuery(conn,paste("delete from opt_userinput_cstr_output where opt_id=",opt_id,sep=""))
+      dbWriteTable(conn,"opt_userinput_cstr_output",ex.cstr,append=T,row.names = F,header=F)
+    } else
+      write.csv(ex.cstr,"opt_input_cstr_output.csv",row.names=F,na="")
     
   }#duplication check
 }
