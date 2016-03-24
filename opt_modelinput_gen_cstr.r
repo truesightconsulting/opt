@@ -58,10 +58,10 @@ for (loop.cstr in 1:n){
                 #################################################################################
                 # merge sp_min result if exist for sp_max optmization iteration
                 #################################################################################
-                # if (names(result)[1]=="sp_min" & names(result)[loop.cstr]=="sp_max") {
-                #   curve=merge(curve[,!"sp_min",with=F],result[["sp_min"]],by="bdgt_id",all.x=T)
-                #   curve$sp_min[is.na(curve$sp_min)]=0
-                # }
+                if (names(result)[1]=="sp_min" & names(result)[loop.cstr]=="sp_max") {
+                  curve=merge(curve[,!"sp_min",with=F],result[["sp_min"]],by="bdgt_id",all.x=T)
+                  curve$sp_min[is.na(curve$sp_min)]=0
+                }
                 
                 # optmization
                 source(paste(path,"opt_modelinput_optm.r",sep=""),local=T)
@@ -88,7 +88,7 @@ for (loop.cstr in 1:n){
       result[[names(result)[loop.cstr]]]=data.table(bdgt_id=temp.output[[1]],sp_min=do.call(pmax, temp.output[,-1,with=F]))
     }else if (names(result)[loop.cstr]=="sp_max"){
       temp.output[is.na(temp.output)]=max.level
-      temp.output[temp.output==0]=max.level
+      #temp.output[temp.output==0]=max.level
       result[[names(result)[loop.cstr]]]=data.table(bdgt_id=temp.output[[1]],sp_max=do.call(pmin, temp.output[,-1,with=F]))
     }else if (names(result)[loop.cstr]=="sp_plan"){
       temp.output[is.na(temp.output)]=0
