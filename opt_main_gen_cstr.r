@@ -28,7 +28,7 @@ source(paste(path,"opt_modelinput_functions.r",sep=""),local = T)
 if (nrow(ex.cstr.input)!=0){
   dim.cstr=dbGetQuery(conn,paste("select dim as dim from opt_modules_dim where flag_cstr=1 and client_id=",client_id))$dim
   dim.cstr=paste(dim.cstr,"_id",sep="")
-  cstr.check.tb=ex.cstr.input[,dim.cstr,with=F]
+  cstr.check.tb=ex.cstr.input[,c(dim.cstr,"date_start","date_end"),with=F]
   if (sum(duplicated(cstr.check.tb))!=0){
     print("Error: There is dimension duplication in your constraint/plan/event setup. Please check.")
   }else{

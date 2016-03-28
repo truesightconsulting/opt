@@ -43,6 +43,11 @@ for (loop.cstr in 1:n){
                 # optm par setup based on constraint 
                 source("opt_input_cstr_setup.r",local=T)
                 
+                # tweak searching pace
+                if (ex.setup$input_increment<ex.setup$optimization_type_value){
+                  ex.setup$input_increment=ex.setup$optimization_type_value/5
+                }
+                
                 # generate curve and cps tables for time-variant version 
                 source(paste(path,"opt_modelinput_gen_tables.r",sep=""),local=T)
                 

@@ -30,10 +30,10 @@ if (type %in% c("cstr","plan")){
       sp_min[sp_min==0]=inc
       sp_max[is.na(sp_max)]=1e+10
       sp_max[sp_max==0]=inc
-      if (sum(sp_min<inc | sp_max<inc)!=0) {
-        print(paste("Error: sp_min or sp_max cannot be less than ",format(inc,big.mark = ",",scientific=F),sep=""))
-        check.value=1
-      }
+      # if (sum(sp_min<inc | sp_max<inc)!=0) {
+      #   print(paste("Error: sp_min or sp_max cannot be less than ",format(inc,big.mark = ",",scientific=F),sep=""))
+      #   check.value=1
+      # }
       if (sum(sp_min>sp_max)!=0){
         print("Error: sp_max must greater than or equal to sp_min. Please check your file.")
         check.value=1
@@ -44,11 +44,11 @@ if (type %in% c("cstr","plan")){
         print("Error: Missing values are not allowed in sp_plan column. Please check your file.")
         check.value=1
       }
-      sp_plan[is.na(sp_plan)]=inc
-      if (sum(sp_plan<inc)!=0) {
-        print(paste("Error: Planned spend cannot be less than ",format(inc,big.mark = ",",scientific=F),sep=""))
-        check.value=1
-      }
+      # sp_plan[is.na(sp_plan)]=inc
+      # if (sum(sp_plan<inc)!=0) {
+      #   print(paste("Error: Planned spend cannot be less than ",format(inc,big.mark = ",",scientific=F),sep=""))
+      #   check.value=1
+      # }
     }
     # time window check
     if (is.time==1){
