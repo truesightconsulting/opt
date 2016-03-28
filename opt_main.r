@@ -24,6 +24,11 @@ for (iter in 1:n){
   # generate relevant dim input tables for certain type of optm
   source("opt_input_force_flag.r",local = T)
   
+  # tweak searching pace
+  if (ex.setup$input_increment<ex.setup$optimization_type_value){
+    ex.setup$input_increment=ex.setup$optimization_type_value/5
+  }
+  
   # generate curve and cps table for time-variant optm
   source(paste(path,"opt_modelinput_gen_tables.r",sep=""),local = T)
   
