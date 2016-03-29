@@ -25,8 +25,8 @@ for (iter in 1:n){
   source("opt_input_force_flag.r",local = T)
   
   # tweak searching pace
-  if (ex.setup$input_increment>ex.setup$optimization_type_value){
-    ex.setup$input_increment=max(ex.setup$optimization_type_value/5,1)
+  if (ex.setup$input_increment>ex.setup$optimization_type_value & ex.setup$optimization_type %in% c(1,3,5)){
+    ex.setup$input_increment=ex.setup$optimization_type_value/5
   }
   
   # generate curve and cps table for time-variant optm

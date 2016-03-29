@@ -45,7 +45,7 @@ for (loop.cstr in 1:n){
                 
                 # tweak searching pace
                 if (ex.setup$input_increment>ex.setup$optimization_type_value){
-                  ex.setup$input_increment=ex.setup$optimization_type_value/5
+                  ex.setup$input_increment=max(ex.setup$optimization_type_value/5,1)
                 }
                 
                 # generate curve and cps tables for time-variant version 
