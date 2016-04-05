@@ -291,6 +291,9 @@ if (nrow(curve)==0){
       marg1=marg1[,spend_start:=sum(ex.cstr.final$sp_min)]
       marg1=marg1[,value_start:=sum(calc_npv(curve$sp_min))]
       marg1=marg1[order(marg1$Iteration),]
+      bdgt_dim=str_split(ex.bdgt$bdgt_dim,",")[[1]]
+      bdgt_dim=paste(as.vector(do.call(cbind,strsplit(bdgt_dim,"_id"))),"_name",sep="")
+      marg1=merge(marg1,unique(curve[,c(bdgt_dim,"bdgt_id"),with=F]),by="bdgt_id")
     }
   }
 }# constraint error check
