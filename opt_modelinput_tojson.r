@@ -20,6 +20,12 @@ if (db.usage) {
   }
   setnames(temp,"group","label")
   temp$json[temp$label=="overall"]=gsub("\\[|\\]","",temp$json[temp$label=="overall"])
+  
+  # marg1 output in excel
+  temp=rbindlist(list(temp,data.table(output_id=as.integer(1),label="Marginal",type="excel",tab=as.integer(0),is_chart=as.integer(0),is_table=as.integer(0),
+                                      chart="excel",drilldown=0,
+                                      dim=NA,filter=NA,json=as.character(toJSON(marg1)),opt_id=opt_id)))
+  
   dbGetQuery(conn,paste("delete from opt_output where opt_id=",opt_id,sep=""))
   dbWriteTable(conn,"opt_output",temp[,!c("output_id","dim" ),with=F],append=T,row.names = F,header=F)
   # upload ex.output to db for scenario comparasion
