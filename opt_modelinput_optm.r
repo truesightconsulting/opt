@@ -132,6 +132,7 @@ if (nrow(curve)==0){
   }else if (loop==0 | ex.setup$optimization_type==4 | check.goal.ini==1) {
     summary.sp=curve[!duplicated(curve[,c("bdgt_id"),with=F]),]
     print("Note: Optimization is completed.")
+    marg=vector("list",1)
     if (check.goal.ini==1) print("Note: Optimization reached goal value.")
   }else{
     # create log
