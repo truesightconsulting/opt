@@ -78,6 +78,7 @@ if (nrow(ex.cstr.input)!=0){
       ex.cstr=data.table(opt_id=rep(opt_id,nrow(ex.cstr)),ex.cstr)
       ex.cstr=ex.cstr[,!c("client_id","id"),with=F]
     }else if (ex.setup$optimization_time==1){
+      temp.cstr.output=data.table(bdgt_id=as.character(NA),sp_min=as.numeric(NA))
       source(paste(main.path,"opt_modelinput_gen_cstr.r",sep=""),local=T)
       ex.cstr=ex.cstr[,!c("client_id","id"),with=F]
     }
