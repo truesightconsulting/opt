@@ -50,6 +50,7 @@ if (nrow(ex.cstr.input)!=0){
       for (k in which(sapply(temp.cstr.output,is.character))) set(temp.cstr.output, j=k, value=as.integer(temp.cstr.output[[k]]))
       temp.cstr.output=merge(ex.cstr[,c("client_id","bdgt_id",dim.cstr),with=F],temp.cstr.output,by=dim.cstr) # merge only take overlap part to filter out missing curve
       # not all one part
+      ex.cstr.input=ex.cstr.input[cstr.index==1]
       source(paste(main.path,"opt_modelinput_gen_cstr.r",sep=""),local=T)
       result=vector("list",3)
       names(result)= c("sp_min","sp_max","sp_plan")
