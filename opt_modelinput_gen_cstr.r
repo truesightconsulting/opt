@@ -11,12 +11,12 @@ names(result)=cstr.name[index]
 # constraint gen loop
 for (loop.cstr in 1:n){
   # Load in data
-  source("opt_input_load.r",local = T)
+  source(paste(main.path,"opt_modelinput_load.r",sep=""),local = T)
   
   if (allone.check==F & ex.setup$optimization_time==2)  ex.cstr.input=copy(ex.cstr.input[cstr.index!=0])
   
   # generate setup input tables for constraint
-  source(paste(path,"opt_modelinput_check_cstr.r",sep=""),local = T)
+  source(paste(main.path,"opt_modelinput_check_cstr.r",sep=""),local = T)
   
   print("Note: Building Clusters")
   if (nrow.check==1){
@@ -35,10 +35,10 @@ for (loop.cstr in 1:n){
                 print(paste("Note: ",names(result)[loop.cstr]," ",iter," ",Sys.time(),sep=""))
                 
                 # load function
-                source(paste(path,"opt_modelinput_functions.r",sep=""),local=T)
+                source(paste(main.path,"opt_modelinput_functions.r",sep=""),local=T)
                 
                 # Load in data
-                source("opt_input_load.r",local=T)
+                source(paste(main.path,"opt_modelinput_load.r",sep=""),local=T)
                 
                 # optm par setup based on constraint 
                 source("opt_input_cstr_setup.r",local=T)
@@ -49,16 +49,16 @@ for (loop.cstr in 1:n){
                 }
                 
                 # generate curve and cps tables for time-variant version 
-                source(paste(path,"opt_modelinput_gen_tables.r",sep=""),local=T)
+                source(paste(main.path,"opt_modelinput_gen_tables.r",sep=""),local=T)
                 
                 # prepare curve parameters for optm
                 source("opt_input_curve_par.r",local=T)
                 
                 # flag all the selected curves
-                source("opt_input_flag_table.r",local=T)
+                source(paste(main.path,"opt_modelinput_flag_table.r",sep=""),local=T)
                 
                 # calc final min and max constraints, them merge them with curve, as well as cps
-                source(paste(path,"opt_modelinput_calc_cstr.r",sep=""),local=T)
+                source(paste(main.path,"opt_modelinput_calc_cstr.r",sep=""),local=T)
                 
                 #################################################################################
                 # merge sp_min result if exist for sp_max optmization iteration
@@ -69,7 +69,7 @@ for (loop.cstr in 1:n){
                 }
                 
                 # optmization
-                source(paste(path,"opt_modelinput_optm.r",sep=""),local=T)
+                source(paste(main.path,"opt_modelinput_optm.r",sep=""),local=T)
                 
                 # save result
                 if(error.missingcurve==0){

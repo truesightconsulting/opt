@@ -86,3 +86,30 @@ optm.dupe.table=function(table,time.range){
   dupe.table$bdgt_id=paste(dupe.table$bdgt_id,dupe.table$week_id,sep="_")
   dupe.table
 }
+
+
+# extract bdgt dim
+get_bdgt_dim=function(){
+  adm.setup=fread(paste(getwd(),"/admin/opt/admin/adm_setup.csv",sep=""))
+  dim=adm.setup$value[adm.setup$attribute=="bdgt_dim"]
+  dim=strsplit(dim,",")[[1]]
+  dim=dim[!dim %in% c("week_id","month_id")]
+  return(unique(substr(dim,1,nchar(dim)-4)))
+}
+
+# extract dim number
+get_dim_n=function(x){
+  #x="chan"
+  adm.setup=fread(paste(getwd(),"/admin/opt/admin/adm_setup.csv",sep=""))
+  dim=adm.setup$value[adm.setup$attribute==paste("dim_",x,sep="")]
+  dim=strsplit(dim,",")[[1]]
+  return(dim)
+}
+
+# extract dim
+get_dim=function(){
+  adm.setup=fread(paste(getwd(),"/admin/opt/admin/adm_setup.csv",sep=""))
+  dim=grep("dim_",adm.setup$attribute,value=T)
+  dim=substr(dim,5,nchar(dim))
+  return(dim)
+}
