@@ -32,12 +32,9 @@ if (nrow(ex.cstr.input)!=0){
   if (sum(duplicated(cstr.check.tb))!=0){
     print("Error: There is dimension duplication in your constraint/plan/event setup. Please check.")
   }else{
-    comma.check=list("vector",ncol(cstr.check.tb))
-    for (i in 1:ncol(cstr.check.tb)){
-      comma.check[[i]]=grepl(",",cstr.check.tb[[i]])
-    }
-    cstr.index=apply(do.call("cbind",comma.check),1,sum)
-    if (sum(cstr.index)==0) allone.check=T else allone.check=F
+    comma.check=function(x) any(unlist(lapply(1:ncol(cstr.check.tb[x,]),function(x) grepl(",",cstr.check.tb[[x]]))))
+    cstr.index=unlist(lapply(1:nrow(cstr.check.tb),comma.check))
+    if (any(cstr.index)) allone.check=T else allone.check=F
     
     if (allone.check & ex.setup$optimization_time==2){
       temp.cstr.output=ex.cstr.input[,c("sp_min","sp_max","sp_plan","opt_id",dim.cstr),with=F]
@@ -46,11 +43,11 @@ if (nrow(ex.cstr.input)!=0){
       ex.cstr=temp.cstr.output
     }else if (allone.check==F & ex.setup$optimization_time==2){
       # all one part
-      temp.cstr.output=ex.cstr.input[cstr.index==0,c("sp_min","sp_max","sp_plan","opt_id",dim.cstr),with=F]
+      temp.cstr.output=ex.cstr.input[cstr.index==F,c("sp_min","sp_max","sp_plan","opt_id",dim.cstr),with=F]
       for (k in which(sapply(temp.cstr.output,is.character))) set(temp.cstr.output, j=k, value=as.integer(temp.cstr.output[[k]]))
       temp.cstr.output=merge(ex.cstr[,c("client_id","bdgt_id",dim.cstr),with=F],temp.cstr.output,by=dim.cstr) # merge only take overlap part to filter out missing curve
       # not all one part
-      ex.cstr.input=ex.cstr.input[cstr.index==1]
+      ex.cstr.input=ex.cstr.input[cstr.index]
       source(paste(main.path,"opt_modelinput_gen_cstr.r",sep=""),local=T)
       result=vector("list",3)
       names(result)= c("sp_min","sp_max","sp_plan")
