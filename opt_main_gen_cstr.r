@@ -34,7 +34,7 @@ if (nrow(ex.cstr.input)!=0){
   }else{
     comma.check=function(x) any(unlist(lapply(1:ncol(cstr.check.tb[x,]),function(x) grepl(",",cstr.check.tb[[x]]))))
     cstr.index=unlist(lapply(1:nrow(cstr.check.tb),comma.check))
-    if (any(cstr.index)) allone.check=T else allone.check=F
+    if (!any(cstr.index)) allone.check=T else allone.check=F
     
     if (allone.check & ex.setup$optimization_time==2){
       temp.cstr.output=ex.cstr.input[,c("sp_min","sp_max","sp_plan","opt_id",dim.cstr),with=F]
