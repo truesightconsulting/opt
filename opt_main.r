@@ -37,7 +37,7 @@ for (iter in 1:n){
   if (ex.setup$optimization_time!=1) check.event.date=0
   
   # prepare curve parameters for optm
-  source("opt_input_curve_par.r",local = T)
+  source(paste(main.path,"opt_modelinput_curve_tweak.r",sep=""),local = T)
   
   # flag all the selected curves
   source(paste(main.path,"opt_modelinput_flag_table.r",sep=""),local = T)
@@ -56,7 +56,7 @@ for (iter in 1:n){
 }
 
 # output
-source("opt_input_post_calc.r",local = T)
+source(paste(main.path,"opt_modelinput_post_calc.r",sep=""),local = T)
 
 #save.image("opt_output.Rdata")
 end=Sys.time()-start.time

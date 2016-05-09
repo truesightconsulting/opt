@@ -13,8 +13,8 @@ if (ex.setup$optimization_type %in% c(3,4)){
     temp.dim=paste(get_dim_n(i),collapse = ",")
     temp.dim=parse(text=paste("paste(",temp.dim,",sep='+')",sep=""))
     index=eval(temp)[,eval(temp.dim)] %in% unique(ex.plan.input[,eval(temp.dim)]) 
-    eval(temp)[[paste("flag_",i,sep="")]][index]=1
-    eval(temp)[[paste("flag_",i,sep="")]][!index]=0
+    eval(temp)[,paste("flag_",i,sep=""):=replace(eval(temp)[[paste("flag_",i,sep="")]],index,1)]
+    eval(temp)[,paste("flag_",i,sep=""):=replace(eval(temp)[[paste("flag_",i,sep="")]],!index,0)]
   }
   
 }else if (ex.setup$optimization_type==10){

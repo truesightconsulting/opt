@@ -208,7 +208,7 @@ if (nrow(curve)==0){
         goal.check=0
       }else if (ex.setup$optimization_type %in% c(2,9,10)){
         goal.check=sum(curve$value_current)
-        source("opt_input_multicheck.r",local = T)
+        source(paste(main.path,"opt_modelinput_multicheck.r",sep=""),local = T)
         if (sum(curve$value_current)>=goal) break
         if (max.value.inc<value.inc.threshold) break  
       }else if (ex.setup$optimization_type==6){

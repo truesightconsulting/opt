@@ -41,7 +41,7 @@ for (loop.cstr in 1:n){
                 source(paste(main.path,"opt_modelinput_load.r",sep=""),local=T)
                 
                 # optm par setup based on constraint 
-                source("opt_input_cstr_setup.r",local=T)
+                source(paste(main.path,"opt_modelinput_cstr_setup.r",sep=""),local=T)
                 
                 # tweak searching pace
                 if (ex.setup$input_increment>ex.setup$optimization_type_value){
@@ -52,7 +52,7 @@ for (loop.cstr in 1:n){
                 source(paste(main.path,"opt_modelinput_gen_tables.r",sep=""),local=T)
                 
                 # prepare curve parameters for optm
-                source("opt_input_curve_par.r",local=T)
+                source(paste(main.path,"opt_modelinput_curve_tweak.r",sep=""),local=T)
                 
                 # flag all the selected curves
                 source(paste(main.path,"opt_modelinput_flag_table.r",sep=""),local=T)
@@ -104,7 +104,7 @@ for (loop.cstr in 1:n){
 
 print("Note: Exporting Result")
 # Load in data
-source("opt_input_load.r",local = T)
+source(paste(main.path,"opt_modelinput_load.r",sep=""),local = T)
 
 # calc final min and max for optm with plan
 result.all=Reduce(function(...) merge(...,all=TRUE,by="bdgt_id"), result)

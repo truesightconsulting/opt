@@ -2,7 +2,7 @@
 print("Note: Loading Data")
 if (db.usage){
   options(warn = -1)
-  # customized part
+  beta=get_beta()
   ex.chan=data.table(dbGetQuery(conn,paste("select * from opt_userinput_dim_chan where opt_id=",opt_id,sep="")))
   ex.sales=data.table(dbGetQuery(conn,paste("select * from opt_userinput_dim_sales where opt_id=",opt_id,sep="")))
   ex.dma=data.table(dbGetQuery(conn,paste("select * from opt_userinput_dim_dma where opt_id=",opt_id,sep="")))
@@ -12,16 +12,11 @@ if (db.usage){
   ex.multigoal=data.table(dbGetQuery(conn,paste("select * from opt_userinput_multigoal where opt_id=",opt_id,sep="")))
   ex.curvegroup=data.table(dbGetQuery(conn,paste("select * from opt_userinput_curvegroup where opt_id=",opt_id,sep="")))
   max.level=1e+10 # max constrain if missing or goal seek 
-  beta="a" # para name of beta in curve formula
-  #path=main.path # source code path
   if (run.cstr==T) {
     ex.cstr=data.table(dbGetQuery(conn,paste("select * from opt_input_cstr_output where client_id=",client_id,sep="")))
   }else{
     ex.cstr=data.table(dbGetQuery(conn,paste("select * from opt_userinput_cstr_output where opt_id=",opt_id,sep="")))
   }
-  
-
-  # fixed part
   ex.setup=data.table(dbGetQuery(conn,paste("select * from opt_userinput_setup where opt_id=",opt_id,sep="")))
   ex.cstr.hidden=data.table(dbGetQuery(conn,paste("select * from opt_modelinput_hidden_cstr where client_id=",client_id,sep="")))
   ex.bdgt=data.table(dbGetQuery(conn,paste("select * from opt_modelinput_bdgt where client_id=",client_id,sep="")))
@@ -51,8 +46,6 @@ if (db.usage){
   ex.multigoal=fread("opt_input_multigoal.csv",colClasses=c(rep("numeric",3),rep("character",5)),drop="client_id",na.strings="NULL")
   ex.curvegroup=fread("opt_input_curvegroup.csv",drop="client_id",na.strings="NULL")
   max.level=1e+10 # max constrain if missing or goal seek 
-  beta="a" # para name of beta in curve formula
-  path=main.path # source code path
   ex.salchan=fread("opt_input_dim_salchan.csv",drop="client_id",na.strings="NULL")
   
   # fixed part

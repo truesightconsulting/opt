@@ -113,3 +113,39 @@ get_dim=function(){
   dim=substr(dim,5,nchar(dim))
   return(dim)
 }
+
+# extract formula
+get_curve_f=function(){
+  adm.setup=fread(paste(getwd(),"/admin/opt/admin/adm_setup.csv",sep=""))
+  return(adm.setup$value[adm.setup$attribute=="formula"])
+}
+
+# extract beta
+get_beta=function(){
+  adm.setup=fread(paste(getwd(),"/admin/opt/admin/adm_setup.csv",sep=""))
+  return(adm.setup$value[adm.setup$attribute=="beta"])
+}
+
+# extract is_mta
+is_mta=function(){
+  adm.setup=fread(paste(getwd(),"/admin/opt/admin/adm_setup.csv",sep=""))
+  return(adm.setup$value[adm.setup$attribute=="is_mta"])
+}
+
+
+# create agg expr
+expr_agg=function(input,output){
+  expr=paste(paste(output,"=sum(",input,")",sep=""),collapse = ",")
+  return(parse(text=paste("list(",expr,")",sep="")))
+}
+
+# create eff expr
+expr_eff=function(metric_eff,f_eff){
+  expr=paste(paste(metric_eff,"=",f_eff,sep=""),collapse = ",")
+  return(parse(text=paste("':='(",expr,")",sep="")))
+}
+
+# drop output column
+drop_col=function(input){
+  if (length(input)!=0) return(temp[,!input,with=F]) else return(temp)
+}
