@@ -149,3 +149,8 @@ expr_eff=function(metric_eff,f_eff){
 drop_col=function(input){
   if (length(input)!=0) return(temp[,!input,with=F]) else return(temp)
 }
+
+# negative exponential curve function
+neg_exp=function(a,b){
+  function(x) a*(1-exp(-b*x))
+}

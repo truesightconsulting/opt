@@ -34,13 +34,4 @@ ex.cstr.hidden=ex.cstr.hidden[flag==length(bdgt_dim),]
 
 if (iter==1) start.sp=ex.cstr[,c("bdgt_id","sp_min"),with=F]
 
-# filter out non-selected curves CUSTOM FOR NOW!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-if (!db.usage){
-  flag=curve$flag_chan+curve$flag_sales+curve$flag_dma+curve$flag_curvegroup
-  curve=curve[flag==4,]
-  
-  flag=ex.cstr.hidden$flag_chan+ex.cstr.hidden$flag_dma
-  ex.cstr.hidden=ex.cstr.hidden[flag==2,]
-}
-
 

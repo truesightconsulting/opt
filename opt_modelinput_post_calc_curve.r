@@ -40,6 +40,6 @@ for (j in 1:length(unique(temp.dim$sales1_name))){
   temp.json[[j]]=paste("\"",group.name,"\":{\"data\":[",paste(series,collapse = ","),"],\"label\":{\"x\":\"",x.label,"\",\"y\":\"",group.name,"\"}}",sep="")
 }
 json=paste("{",paste(unlist(temp.json),collapse = ","),"}",sep="")
-temp=data.table(id=NA,label="linechart",group="Media",type=NA,tab=1,is_chart=1,is_table=0,chart="line",
+temp=data.table(id=NA,label="linechart",group=ex.output$group[ex.output$type=="chan"][1],type=NA,tab=1,is_chart=1,is_table=0,chart="line",
                 drilldown=0,dim=NA,filter=NA,json=json)
 ex.output=rbind(ex.output,temp)

@@ -7,11 +7,12 @@ temp_dim=get_dim_n("sales")
 curve=merge(curve,ex.clv[,c(temp_dim,"clv","approval"),with=F],by=temp_dim,all.x=T)
 
 # tweak a based on approval
-curve$a=curve$a*curve$approval
+curve[[beta]]=curve[[beta]]*curve$approval
 
 # tweak curve based on time window
 curve_f=get_curve_f()
-if (dbGetQuery(conn,paste("select status from opt_modules where module='opt_input_date_range' and client_id=",client_id,sep=""))$status==1){
+time.window=dbGetQuery(conn,paste("select status from opt_modules where module='opt_input_date_range' and client_id=",client_id,sep=""))$status
+if (time.window==1 & ex.setup$optimization_time==2){
   start.optm=as.Date(ex.setup$date_start)
   end.optm=as.Date(ex.setup$date_end)
   date.temp=optm.date(ex.setup$date_start,ex.setup$date_end)
@@ -21,7 +22,7 @@ if (dbGetQuery(conn,paste("select status from opt_modules where module='opt_inpu
   curve[[beta]]=n*curve[[beta]]
   if (curve_f=="ninah") {
     curve$wks=n*curve$wks
-  }else if (curve_f %in% c("exp","exp000")){
+  }else if (curve_f %in% c("exp","exp000","exp_cpm")){
     curve$b=curve$b/n
   }
 }
@@ -44,26 +45,22 @@ if (curve_f=="ninah") {
   }
 }else if (curve_f=="exp"){
   # decomp function
-  calc_decomp=function(x){
-    # x is spend; output is sales
-    curve$a.decomp*(1-exp(-curve$b*x/curve$cps))
-  }
+  calc_decomp=neg_exp(a=curve$a.decomp,b=curve$b/curve$cps)
+
   # npv function
-  calc_npv=function(x){
-    # x is spend; output is sales
-    curve$a*(1-exp(-curve$b*x/curve$cps))
-  }
+  calc_npv=neg_exp(a=curve$a,b=curve$b/curve$cps)
 }else if (curve_f=="exp000"){
   # decomp function
-  calc_decomp=function(x){
-    # x is spend; output is sales
-    curve$a.decomp*(1-exp(-curve$b*x/(curve$cps*1000)))
-  }
+  calc_decomp=neg_exp(a=curve$a.decomp,b=curve$b/(curve$cps*1000))
+
   # npv function
-  calc_npv=function(x){
-    # x is spend; output is sales
-    curve$a*(1-exp(-curve$b*x/(curve$cps*1000)))
-  }
+  calc_npv=neg_exp(a=curve$a,b=curve$b/(curve$cps*1000))
+}else if (curve_f=="exp_cpm"){
+  # decomp function
+  calc_decomp=neg_exp(a=curve$a.decomp,b=1000*curve$b/curve$cps)
+    
+  # npv function
+  calc_npv=neg_exp(a=curve$a,b=1000*curve$b/curve$cps)
 }
 
 source("opt_input_curve_par.r",local=T)
