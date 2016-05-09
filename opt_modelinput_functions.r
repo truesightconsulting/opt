@@ -86,3 +86,66 @@ optm.dupe.table=function(table,time.range){
   dupe.table$bdgt_id=paste(dupe.table$bdgt_id,dupe.table$week_id,sep="_")
   dupe.table
 }
+
+
+# extract bdgt dim
+get_bdgt_dim=function(){
+  adm.setup=fread(paste(getwd(),"/admin/opt/admin/adm_setup.csv",sep=""))
+  dim=adm.setup$value[adm.setup$attribute=="bdgt_dim"]
+  dim=strsplit(dim,",")[[1]]
+  dim=dim[!dim %in% c("week_id","month_id")]
+  return(unique(substr(dim,1,nchar(dim)-4)))
+}
+
+# extract dim number
+get_dim_n=function(x){
+  #x="chan"
+  adm.setup=fread(paste(getwd(),"/admin/opt/admin/adm_setup.csv",sep=""))
+  dim=adm.setup$value[adm.setup$attribute==paste("dim_",x,sep="")]
+  dim=strsplit(dim,",")[[1]]
+  return(dim)
+}
+
+# extract dim
+get_dim=function(){
+  adm.setup=fread(paste(getwd(),"/admin/opt/admin/adm_setup.csv",sep=""))
+  dim=grep("dim_",adm.setup$attribute,value=T)
+  dim=substr(dim,5,nchar(dim))
+  return(dim)
+}
+
+# extract formula
+get_curve_f=function(){
+  adm.setup=fread(paste(getwd(),"/admin/opt/admin/adm_setup.csv",sep=""))
+  return(adm.setup$value[adm.setup$attribute=="formula"])
+}
+
+# extract beta
+get_beta=function(){
+  adm.setup=fread(paste(getwd(),"/admin/opt/admin/adm_setup.csv",sep=""))
+  return(adm.setup$value[adm.setup$attribute=="beta"])
+}
+
+# extract is_mta
+is_mta=function(){
+  adm.setup=fread(paste(getwd(),"/admin/opt/admin/adm_setup.csv",sep=""))
+  return(adm.setup$value[adm.setup$attribute=="is_mta"])
+}
+
+
+# create agg expr
+expr_agg=function(input,output){
+  expr=paste(paste(output,"=sum(",input,")",sep=""),collapse = ",")
+  return(parse(text=paste("list(",expr,")",sep="")))
+}
+
+# create eff expr
+expr_eff=function(metric_eff,f_eff){
+  expr=paste(paste(metric_eff,"=",f_eff,sep=""),collapse = ",")
+  return(parse(text=paste("':='(",expr,")",sep="")))
+}
+
+# drop output column
+drop_col=function(input){
+  if (length(input)!=0) return(temp[,!input,with=F]) else return(temp)
+}

@@ -5,26 +5,12 @@ start.time=Sys.time()
 cstr.name=c("sp_min","sp_max","sp_plan")
 cutoff.cl=4 # if no. of row is more then this number, then build that number of clusters
 
-# Load in data
-source("opt_input_load.r",local = T)
-
 # load functions
-source(paste(path,"opt_modelinput_functions.r",sep=""),local = T)
+source(paste(main.path,"opt_modelinput_functions.r",sep=""),local = T)
 
-# some cstr check  
-# if (nrow(ex.cstr.input)!=0 & ex.setup$optimization_time==1){
-#   # manipulate optm date
-#   source(paste(path,("opt_modelinput_gen_optmdate.r"),sep=""),local = T)
-#   # check constaint time window
-#   if (ex.setup$optimization_time==1) {
-#     start.cstr=as.Date(ex.cstr.input$date_start)
-#     end.cstr=as.Date(ex.cstr.input$date_end)
-#     if ((sum(start.cstr<start.optm)+sum(end.cstr>end.optm))!=0) {
-#       cstr.check=1
-#       stop("Error: At least one constraint time window falls ouside optimzation time window.")
-#     }
-#   }# constraint time window check
-# }
+# Load in data
+source(paste(main.path,"opt_modelinput_load.r",sep=""),local = T)
+
 if (nrow(ex.cstr.input)!=0){
   dim.cstr=dbGetQuery(conn,paste("select dim as dim from opt_modules_dim where flag_cstr=1 and client_id=",client_id))$dim
   dim.cstr=paste(dim.cstr,"_id",sep="")
@@ -89,7 +75,6 @@ if (nrow(ex.cstr.input)!=0){
     
   }#duplication check
 }
-
 
 end=Sys.time()-start.time
 print(paste("Note: Run time: ",round(end[[1]],digit=2),attr(end,"units"),sep="")) 
