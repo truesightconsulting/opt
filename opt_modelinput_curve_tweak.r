@@ -66,4 +66,5 @@ if (curve_f=="ninah") {
 source("opt_input_curve_par.r",local=T)
 
 # backup curve table
+curve[,eval(parse(text=paste(beta,".decomp:=",beta,sep="")))]
 curve.org=curve
