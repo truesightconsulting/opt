@@ -120,6 +120,7 @@ if (!comma.check){
     upload.lookup=ex.curve[,names(ex.curve)[grepl("_name",names(ex.curve))],with=F]
     upload.lookup=upload.lookup[,!c("curvegroup_name","all_name"),with=F]
     upload.lookup=unique(upload.lookup,by=NULL)
+    setnames(upload.lookup,names(upload.lookup),gsub(pattern = "_name",replacement = "_id",x = names(upload.lookup)))
     write.csv(upload.lookup,"upload_lookup.csv",row.names = F)
     
     # upload curve to db
