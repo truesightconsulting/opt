@@ -433,7 +433,7 @@ if (!comma.check){
     col.exist=dbGetQuery(conn,"show columns from opt_userinput_event")[,1]
     index=!(names(temp[,!"client_id",with=F]) %in% col.exist)
     if (sum(index)!=0){
-      col.new=names(temp)[index]
+      col.new=names(temp[,!"client_id",with=F])[index]
       for (j in 1:length(col.new)){
         print(paste("Note: New Column ",col.new[j]," Inserted",sep=""))
         query=paste(paste(col.new[j]," int null default null",sep = ""))
