@@ -3,7 +3,7 @@
 #######################################################################################
 print("Note: Dimensions Seletion for Certain Type of Optimization")
 
-if (ex.setup$optimization_type %in% c(3,4)){
+if (ex.setup$optimization_type %in% c(3,4,5,9)){
   temp.flag=ex.cstr
   ex.plan.input=temp.flag[!is.na(sp_plan)]
   
