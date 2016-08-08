@@ -23,21 +23,25 @@ for (i in 1:nrow(ex.output)){
   }
   # for summary with filter   
   if(!is.na(ex.output$filter[i])){
-    index=grep(ex.output$filter[i],dim)
-    dim=dim[-index]
-    index=grep(ex.output$filter[i],dim1)
-    dim1=dim1[-index]
-    
-    summary.sp1=summary.sp[,eval(expr_agg(input=input_sp,output=output_sp)),by=c(bdgt_dim[bdgt_dim %in% dim])]
-    summary.npv=curve[,eval(expr_agg(input=input_decomp,output=output_decomp)),by=c(dim1)]
-    if(sum(bdgt_dim %in% dim)==0){
-      temp=data.table(summary.npv,summary.sp1)
-    }else{
-      temp=merge(summary.npv,summary.sp1,by=c(bdgt_dim[bdgt_dim %in% dim]),all.x=T)
+    temp.dim=get_dim_n(ex.output$filter[i])
+    temp.dim=paste(strsplit(temp.dim,"_id"),"_name",sep="")
+    if(nrow(unique(summary[[i]][,temp.dim,with=F],key=NULL))>1) {
+      index=grep(ex.output$filter[i],dim)
+      dim=dim[-index]
+      index=grep(ex.output$filter[i],dim1)
+      dim1=dim1[-index]
+      
+      summary.sp1=summary.sp[,eval(expr_agg(input=input_sp,output=output_sp)),by=c(bdgt_dim[bdgt_dim %in% dim])]
+      summary.npv=curve[,eval(expr_agg(input=input_decomp,output=output_decomp)),by=c(dim1)]
+      if(sum(bdgt_dim %in% dim)==0){
+        temp=data.table(summary.npv,summary.sp1)
+      }else{
+        temp=merge(summary.npv,summary.sp1,by=c(bdgt_dim[bdgt_dim %in% dim]),all.x=T)
+      }
+      
+      temp=rbindlist(list(summary[[i]],temp),fill=T,use.names = T)
+      temp[is.na(temp)]="All"
+      summary[[i]]=temp
     }
-    
-    temp=rbindlist(list(summary[[i]],temp),fill=T,use.names = T)
-    temp[is.na(temp)]="All"
-    summary[[i]]=temp
   }
 }
