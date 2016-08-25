@@ -9,6 +9,11 @@ if (db.usage){
   ex.salchan=data.table(dbGetQuery(conn,paste("select * from opt_userinput_dim_salchan where opt_id=",opt_id,sep="")))
   ex.cps=data.table(dbGetQuery(conn,paste("select * from opt_userinput_cps where opt_id=",opt_id,sep="")))
   ex.cstr.input=data.table(dbGetQuery(conn,paste("select * from opt_userinput_cstr where opt_id=",opt_id,sep="")))
+  temp1=ex.cstr.input[is.na(sp_plan),!c("id","opt_id","sp_plan"),with=F]
+  temp2=ex.cstr.input[!is.na(sp_plan),!c("id","opt_id","sp_max","sp_min"),with=F]
+  ex.cstr.input=merge(temp1,temp2,by=c("date_start","date_end",grep("_id",names(temp1),value=T)),all=T)
+  ex.cstr.input$opt_id=opt_id
+  
   ex.multigoal=data.table(dbGetQuery(conn,paste("select * from opt_userinput_multigoal where opt_id=",opt_id,sep="")))
   ex.curvegroup=data.table(dbGetQuery(conn,paste("select * from opt_userinput_curvegroup where opt_id=",opt_id,sep="")))
   max.level=1e+10 # max constrain if missing or goal seek 
