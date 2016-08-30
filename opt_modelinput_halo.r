@@ -1,5 +1,5 @@
 # halo effect of goal seek
-print("Note: Calculating Halo Effect for Goal Seek")
+print("Note: Calculating Halo Effect")
 if (ex.setup$optimization_type!=10) temp.sp=summary.sp[,c("bdgt_id","sp_current"),with=F]
 curve=curve.org
 # merge current spend with curve
