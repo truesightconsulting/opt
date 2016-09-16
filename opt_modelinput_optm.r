@@ -134,6 +134,11 @@ if (nrow(curve)==0){
     print("Note: Optimization is completed.")
     marg=vector("list",1)
     if (check.goal.ini==1) print("Note: Optimization reached goal value.")
+  }else if (length(unique(curve$bdgt_id))==1){
+    curve$sp_current=budget
+    summary.sp=curve[!duplicated(curve[,c("bdgt_id"),with=F]),]
+    print("Note: Optimization is completed.")
+    marg=vector("list",1)
   }else{
     # create log
     marg=vector("list",1)
