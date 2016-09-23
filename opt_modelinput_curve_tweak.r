@@ -63,8 +63,7 @@ if (curve_f=="ninah") {
   calc_npv=neg_exp(a=curve$a,b=1000*curve$b/curve$cps)
 }
 
-source("opt_input_curve_par.r",local=T)
-
 # backup curve table
 curve[[paste(beta,"_decomp",sep="")]]=curve[[beta]]
+source("opt_input_curve_par.r",local=T)
 curve.org=curve
