@@ -14,13 +14,13 @@ password=args[9]
 
 
 
-# setwd("c:\\Users\\XinZhou\\Documents\\GitHub\\kohls\\")
+# setwd("C:\\Users\\yuemeng1\\Desktop\\TOOL\\wells\\")
 # # True is to staging DB and F is to production DB
 # is.staging=T
 # # main code path
-# main.path="c:\\Users\\XinZhou\\Documents\\GitHub\\opt\\"
-# opt_id=376
-# client_id=27
+# main.path="C:\\Users\\yuemeng1\\Desktop\\code\\opt\\"
+# opt_id=636
+# client_id=40
 # # DB server info
 # 
 # db.name="nviz"

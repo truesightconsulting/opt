@@ -14,8 +14,8 @@ if (is.staging){
   username="Zkdz408R6hll"
   password="XH3RoKdopf12L4BJbqXTtD2yESgwL$fGd(juW)ed"
 }
-main.path="d:\\Archives\\Git\\opt-admin\\" # opt files path
-client_id=12
+main.path="C:\\Users\\yuemeng1\\Desktop\\code\\opt\\" # opt files path
+client_id=44
 client.list=c(
   "opt_input_cps",
   "opt_input_cstr_output",

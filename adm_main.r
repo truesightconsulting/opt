@@ -476,16 +476,25 @@ if (!comma.check){
       }
       if (length(index1)==1) temp=data[index1[[1]]] else
         temp=data[do.call("&",index1),]
-      fit=loess(factor~week_id,temp, span=0.75)
-      yhat=predict(fit,temp[["week_id"]])
-      yhat=(yhat-mean(yhat))/sd(yhat)
-      y1=season.var*yhat+max(abs(yhat))
-      y1=y1/mean(y1)
-      factor=c(y1[1],y1,y1[52])+rnorm(54,0,0.01)
-      temp1=data.table(factor=factor,week_id=1:54)
-      fit=loess(factor~week_id,temp1, span=0.75)
-      factor=predict(fit,temp1[["week_id"]])
-      result[[i]]=cbind(data.table(week_id=0:53,factor=factor),temp[rep(1,54),name,with=F])
+      
+      # yue add
+      if(length(unique(temp$factor))==1) {
+        temp=unique(temp[,!c("week_id"),with=F])
+        result[[i]]=cbind(data.table(week_id=0:53),temp[rep(1,54)])
+      } else {
+        fit=loess(factor~week_id,temp, span=0.75)
+        yhat=predict(fit,temp[["week_id"]])
+        yhat=(yhat-mean(yhat))/sd(yhat)
+        y1=season.var*yhat+max(abs(yhat))
+        y1=y1/mean(y1)
+        factor=c(y1[1],y1,y1[52])+rnorm(54,0,0.01)
+        temp1=data.table(factor=factor,week_id=1:54)
+        fit=loess(factor~week_id,temp1, span=0.75)
+        factor=predict(fit,temp1[["week_id"]])
+        result[[i]]=cbind(data.table(week_id=0:53,factor=factor),temp[rep(1,54),name,with=F])
+      }
+      
+      
     }
     
     final=rbindlist(result)

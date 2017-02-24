@@ -1,7 +1,7 @@
 suppressMessages(suppressWarnings(library(RMySQL)))
 suppressMessages(suppressWarnings(library(data.table)))
 suppressMessages(suppressWarnings(library(bcrypt)))
-data=fread("c:\\Users\\XinZhou\\Desktop\\new_user.csv",colClasses=c("chr","chr","int"))
+data=fread("C:\\Users\\yuemeng1\\Desktop\\code\\opt\\new_user.csv",colClasses=c("chr","chr","int"))
 pwd="Passw0rd#1"
 # True is to staging DB and F is to production DB
 is.staging=F 
